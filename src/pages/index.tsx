@@ -1,19 +1,19 @@
-import { useUser } from '@auth0/nextjs-auth0'
+import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 import type { NextPage } from 'next'
+import { AppProps } from 'next/app'
 import Head from 'next/head'
 import Link from 'next/link'
-import styles from '../styles/Home.module.css'
+import styles from '@/styles/Home.module.css'
 
-const Home: NextPage = () => {
-  const { user, error, isLoading } = useUser()
+interface User {
+  name: string
+}
 
-  if (isLoading) {
-    return <div className={styles.container}>Loading...</div>
-  }
-  if (error) {
-    return <div className={styles.container}>{error.message}</div>
-  }
+interface Props extends AppProps {
+  user: User
+}
 
+const Index: NextPage<Props> = ({ user }) => {
   return (
     <>
       <Head>
@@ -22,21 +22,17 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <div className={styles.container}>
-        {user ? (
-          <p>
-            Welcome {user.name}!{' '}
-            <Link href='/api/auth/logout'>
-              <a>Logout</a>
-            </Link>
-          </p>
-        ) : (
-          <Link href='/api/auth/login'>
-            <a>Login</a>
+        <p>
+          Welcome {user.name}!{' '}
+          <Link href='/api/auth/logout'>
+            <a>Logout</a>
           </Link>
-        )}
+        </p>
       </div>
     </>
   )
 }
 
-export default Home
+export const getServerSideProps = withPageAuthRequired()
+
+export default Index
