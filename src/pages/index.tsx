@@ -1,6 +1,5 @@
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import { NextPage } from 'next'
-import { AppProps } from 'next/app'
 import Head from 'next/head'
 import Link from 'next/link'
 import styles from '@/styles/Home.module.css'
@@ -17,7 +16,7 @@ interface ToDo {
   content: string
 }
 
-interface Props extends AppProps {
+interface Props {
   user: User
   todos: ToDo[]
 }
@@ -54,7 +53,7 @@ export const getServerSideProps = withPageAuthRequired({
       throw new Error('auth0に接続できません')
     }
 
-    const supabase = getSupabase()
+    const supabase = getSupabase(session.user.accessToken)
     if (!supabase) {
       throw new Error('supabaseに接続できません')
     }

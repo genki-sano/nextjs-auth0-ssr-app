@@ -1,6 +1,8 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-export const getSupabase = (): SupabaseClient | undefined => {
+export const getSupabase = (
+  accessToken: string | undefined,
+): SupabaseClient | undefined => {
   if (
     !process.env.NEXT_PUBLIC_SUPABASE_URL ||
     !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -12,6 +14,10 @@ export const getSupabase = (): SupabaseClient | undefined => {
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   )
+
+  if (accessToken) {
+    supabase.auth.setAuth(accessToken)
+  }
 
   return supabase
 }
