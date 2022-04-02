@@ -1,19 +1,28 @@
-import { withPageAuthRequired } from '@auth0/nextjs-auth0'
-import type { NextPage } from 'next'
+import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
+import { NextPage } from 'next'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import Link from 'next/link'
 import styles from '@/styles/Home.module.css'
+import { getSupabase } from '@/utils/supabase'
 
 interface User {
   name: string
 }
 
-interface Props extends AppProps {
-  user: User
+interface ToDo {
+  id: number
+  usder_id: string
+  is_complete: boolean
+  content: string
 }
 
-const Index: NextPage<Props> = ({ user }) => {
+interface Props extends AppProps {
+  user: User
+  todos: ToDo[]
+}
+
+const Index: NextPage<Props> = ({ user, todos }) => {
   return (
     <>
       <Head>
@@ -28,11 +37,37 @@ const Index: NextPage<Props> = ({ user }) => {
             <a>Logout</a>
           </Link>
         </p>
+        {todos?.length > 0 ? (
+          todos.map((todo) => <p key={todo.id}>{todo.content}</p>)
+        ) : (
+          <p>You have completed all todos!</p>
+        )}
       </div>
     </>
   )
 }
 
-export const getServerSideProps = withPageAuthRequired()
+export const getServerSideProps = withPageAuthRequired({
+  async getServerSideProps({ req, res }) {
+    const session = await getSession(req, res)
+    if (!session) {
+      throw new Error('auth0に接続できません')
+    }
+
+    const supabase = getSupabase()
+    if (!supabase) {
+      throw new Error('supabaseに接続できません')
+    }
+
+    const { error, data } = await supabase.from<ToDo>('todos').select('*')
+    if (error) {
+      throw new Error(error.message)
+    }
+
+    return {
+      props: { todos: data },
+    }
+  },
+})
 
 export default Index
