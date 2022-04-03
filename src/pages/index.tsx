@@ -1,11 +1,9 @@
-import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
-import jwt from 'jsonwebtoken'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { Index } from '@/component/Index'
 import { ToDo, TODO_TABLE_NAME } from '@/models/todo'
 import { User } from '@/models/user'
-import { getAuth0Session } from '@/utils/auth0'
+import { withPageAuthRequired } from '@/utils/auth0'
 import { getSupabase } from '@/utils/supabase'
 
 interface Props {
@@ -27,16 +25,8 @@ const IndexPage: NextPage<Props> = ({ user, todos }) => {
 }
 
 export const getServerSideProps = withPageAuthRequired({
-  async getServerSideProps({ req, res }) {
-    const session = await getAuth0Session(req, res)
-    if (!session) {
-      throw new Error('auth0に接続できません')
-    }
-
+  async getServerSideProps({ session }) {
     const supabase = getSupabase(session.user.accessToken)
-    if (!supabase) {
-      throw new Error('supabaseに接続できません')
-    }
 
     const { error, data } = await supabase
       .from<ToDo>(TODO_TABLE_NAME)
