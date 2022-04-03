@@ -1,6 +1,6 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-export const getSupabase = (accessToken: string): SupabaseClient => {
+export const createSupabaseClient = (accessToken: string): SupabaseClient => {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     throw new Error('Supabase url is required.')
   }

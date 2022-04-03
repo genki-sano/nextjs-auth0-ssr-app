@@ -1,10 +1,10 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { Index } from '@/component/Index'
-import { ToDo, TODO_TABLE_NAME } from '@/models/todo'
-import { User } from '@/models/user'
-import { withPageAuthRequired } from '@/utils/auth0'
-import { getSupabase } from '@/utils/supabase'
+import { withPageAuthRequired } from '@/external/auth0'
+import { createSupabaseClient } from '@/external/supabase'
+import { ToDo, TODO_TABLE_NAME } from '@/libs/models/todo'
+import { User } from '@/libs/models/user'
 
 interface Props {
   user: User
@@ -26,7 +26,7 @@ const IndexPage: NextPage<Props> = ({ user, todos }) => {
 
 export const getServerSideProps = withPageAuthRequired({
   async getServerSideProps({ session }) {
-    const supabase = getSupabase(session.user.accessToken)
+    const supabase = createSupabaseClient(session.user.accessToken)
 
     const { error, data } = await supabase
       .from<ToDo>(TODO_TABLE_NAME)

@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { ToDo } from '@/models/todo'
-import { User } from '@/models/user'
+import { ToDo } from '@/libs/models/todo'
+import { User } from '@/libs/models/user'
 import styles from '@/styles/Home.module.css'
 
 interface Props {
