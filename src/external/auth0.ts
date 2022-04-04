@@ -50,7 +50,7 @@ export const withPageAuthRequired = <
   }
 }
 
-const setAccessToken = (session: Session): Session => {
+export const setAccessToken = (session: Session): Session => {
   const now = Math.floor(Date.now() / 1000)
   // クロックスキューが発生する可能性があるので、判定に1分だけ余裕を持たせる
   if (
