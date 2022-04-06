@@ -1,8 +1,12 @@
 import { getSession } from '@auth0/nextjs-auth0'
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next'
 import { setAccessToken } from '@/external/auth0'
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
+interface Data {
+  accessToken: string
+}
+
+const handler = (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const session = getSession(req, res)
   if (!session?.user) {
     res.status(401).end('401 Unauthorized')
