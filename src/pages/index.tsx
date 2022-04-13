@@ -6,7 +6,7 @@ import { createSupabaseClient } from '@/external/supabase'
 import { ToDo, TODO_TABLE_NAME } from '@/libs/models/todo'
 import { User } from '@/libs/models/user'
 
-interface Props {
+type Props = {
   user: User
   todos: ToDo[]
 }

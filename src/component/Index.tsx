@@ -3,7 +3,7 @@ import { ToDo } from '@/libs/models/todo'
 import { User } from '@/libs/models/user'
 import styles from '@/styles/Home.module.css'
 
-interface Props {
+type Props = {
   user: User
   todos: ToDo[]
 }

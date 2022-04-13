@@ -2,7 +2,7 @@ import { getSession } from '@auth0/nextjs-auth0'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { setAccessToken } from '@/external/auth0'
 
-export interface ResponseData {
+export type ResponseData = {
   accessToken: string
 }
 

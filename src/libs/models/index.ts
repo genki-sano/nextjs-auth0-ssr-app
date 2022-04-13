@@ -1,4 +1,4 @@
-export interface BaseModel {
+export type BaseModel = {
   created_at: Date
   updated_at: Date
 }
