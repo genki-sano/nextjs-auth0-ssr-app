@@ -5,10 +5,7 @@ import { useEffect, useState } from 'react'
 import useSwr from 'swr'
 import { createSupabaseClient } from '@/external/supabase'
 import { ToDo, TODO_TABLE_NAME } from '@/libs/models/todo'
-
-interface ResponseData {
-  accessToken: string
-}
+import { ResponseData } from '@/pages/api/auth/accessToken'
 
 const fetcher = async (url: string): Promise<ResponseData | null> => {
   const response = await fetch(url)
