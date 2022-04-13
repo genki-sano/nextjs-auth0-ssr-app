@@ -38,7 +38,6 @@ export const withPageAuthRequired = <
         },
       }
     }
-    // TODO: ページを表示してからしばらく経つと、トークンの期限が切れるので仕様を検討する
     session = setAccessToken(session)
 
     let ret: any = { props: {} }
